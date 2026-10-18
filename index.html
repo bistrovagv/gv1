@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ОГЭ Информатика. Задание №1</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.2;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #f0f4f8;
+            color: #333;
+        }
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .task-text {
+            font-size: 1.1em;
+            margin-bottom: 20px;
+            white-space: pre-wrap;
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-left: 5px solid #3498db;
+            border-radius: 6px;
+            font-style: italic;
+            min-height: 120px;
+        }
+        .steps-container {
+            display: grid;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .step-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px;
+            border-radius: 8px;
+            transition: background-color 0.3s;
+        }
+        .step-row.correct {
+            background-color: #e8f5e9;
+            border: 1px solid #4caf50;
+        }
+        .step-row.incorrect {
+            background-color: #ffebee;
+            border: 1px solid #f44336;
+        }
+        .step-row input {
+            width: 100px;
+            padding: 10px;
+            font-size: 1em;
+            text-align: center;
+            border: 2px solid #ccc;
+            border-radius: 6px;
+            transition: border-color 0.3s;
+        }
+        .step-row input:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+        .step-label {
+            min-width: 220px;
+            font-weight: 500;
+            color: #555;
+        }
+        .controls {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        button {
+            padding: 12px 24px;
+            font-size: 1em;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.2s;
+            font-weight: 500;
+        }
+        button:hover {
+            transform: translateY(-2px);
+        }
+        #checkBtn {
+            background-color: #3498db;
+            color: white;
+            flex-grow: 1;
+        }
+        #checkBtn:hover {
+            background-color: #2980b9;
+        }
+        #solutionBtn {
+            background-color: #9b59b6;
+            color: white;
+        }
+        #solutionBtn:hover {
+            background-color: #8e44ad;
+        }
+        #newTaskBtn {
+            background-color: #27ae60;
+            color: white;
+        }
+        #newTaskBtn:hover {
+            background-color: #1e8449;
+        }
+        #answerField {
+            padding: 12px;
+            font-size: 1em;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            width: 100%;
+            box-sizing: border-box;
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+        #answerField.correct {
+            border-color: #4caf50;
+            background-color: #e8f5e9;
+        }
+        #answerField.incorrect {
+            border-color: #f44336;
+            background-color: #ffebee;
+        }
+        .feedback {
+            margin-top: 10px;
+            font-weight: bold;
+            min-height: 24px;
+            text-align: center;
+        }
+        .feedback.success {
+            color: #27ae60;
+        }
+        .feedback.error {
+            color: #c0392b;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h1>ОГЭ Информатика. Задание №1</h1>
+    
+    <div id="taskText" class="task-text">
+        Нажмите «Новое задание», чтобы начать.
+    </div>
+
+    <div class="steps-container">
+        <div class="step-row" id="step1">
+            <span class="step-label">На 1 символ в данной кодировке отводится:</span>
+            <input type="text" id="ans1" maxlength="3"> бит = <input type="text" id="ans2" maxlength="3"> байт
+        </div>
+        <div class="step-row" id="step2">
+            <span class="step-label">Объём текста стал меньше на:</span>
+            <input type="text" id="ans3" maxlength="4"> байт
+        </div>
+        <div class="step-row" id="step3">
+            <span class="step-label">Значит всего из текста удалили:</span>
+            <input type="text" id="ans4" maxlength="4"> символов
+        </div>
+        <div class="step-row" id="step4">
+            <span class="step-label">Из них два символа — это запятая и пробел. </span>
+        </div>
+        <div class="step-row" id="step5">
+	    <span class="step-label"> Значит искомое слово (текст) из:</span>
+            <input type="text" id="ans5" maxlength="3"> символов
+        </div>
+    </div>
+
+    <div>
+        <label for="answerField"><strong>Найди в тексте слово из нужного количества букв и запиши его в поле для ответа:</strong></label>
+        <input type="text" id="answerField" >
+    </div>
+
+    <div class="feedback" id="feedback"></div>
+
+    <div class="controls">
+        <button id="checkBtn">Проверить</button>
+        <button id="solutionBtn">Решение</button>
+        <button id="newTaskBtn">Новое задание</button>
+    </div>
+</div>
+
+<script>
+    // Новые актуальные задания (источник: банк ФИПИ, Инфоурок, Решу ОГЭ)
+    const tasks = [
+        {
+            text: `В одной из кодировок Unicode каждый символ кодируется 32 битами. Петя написал текст (в нём нет лишних пробелов):
+
+«Эола, Сяо, Альбедо, Дилюк, Мона — пятизвёздочные персонажи».
+
+Ученик вычеркнул из списка имя одного из персонажей. Заодно он вычеркнул ставшие лишними запятые и пробелы — два пробела не должны идти подряд.
+
+При этом размер нового предложения в данной кодировке оказался на 28 байт меньше, чем размер исходного предложения. Напишите в ответе вычеркнутое имя персонажа.`,
+            bitsPerChar: 32,
+            bytesPerChar: 4,
+            sizeDiff: 28,
+            answer: "ДИЛЮК"
+        },
+        {
+            text: `В кодировке KOI8-R каждый символ кодируется 8 битами. Ученик написал текст (в нём нет лишних пробелов):
+
+«Самыми известными поэтами-«шестидесятниками» являются Юрий Визбор, Булат Окуджава, Белла Ахмадулина, Евгений Евтушенко, Андрей Вознесенский, Роберт Рождественский».
+
+Ученик полностью удалил из списка упоминание об одном из поэтов, а также лишние запятую и пробел — два пробела не должны идти подряд.
+
+При этом размер нового предложения в данной кодировке оказался на 13 байт меньше, чем размер исходного предложения. Напишите в ответе фамилию удалённого автора (имя писать не нужно).`,
+            bitsPerChar: 8,
+            bytesPerChar: 1,
+            sizeDiff: 13,
+            answer: "ВИЗБОР"
+        },
+        {
+            text: `В одной из кодировок каждый символ кодируется 8 битами. Евлампий написал текст (в нём нет лишних пробелов):
+
+«Сахаров А.Д., Курчатов И.В., Вавилов С.И., Компанеец А.С., Черенков П.А., — советские учёные-физики».
+
+Затем он вычеркнул из списка фамилию и инициалы одного из учёных. Заодно он вычеркнул ставшие лишними запятые и пробелы — два пробела не должны идти подряд.
+
+При этом размер теста в данной кодировке оказался на 16 байт меньше, чем размер исходного предложения. Укажите фамилию учёного, которого убрали из списка (инициалы указывать не нужно).`,
+            bitsPerChar: 8,
+            bytesPerChar: 1,
+            sizeDiff: 16,
+            answer: "КОМПАНЕЕЦ"
+        }
+    ];
+
+    let currentTask = null;
+    let solutionVisible = false;
+
+    function generateTask() {
+        solutionVisible = false;
+        document.getElementById('solutionBtn').textContent = 'Решение';
+        
+        document.querySelectorAll('.step-row').forEach(row => {
+            row.classList.remove('correct', 'incorrect');
+        });
+        document.querySelectorAll('.steps-container input').forEach(input => {
+            input.value = '';
+            input.disabled = false;
+        });
+        document.getElementById('answerField').value = '';
+        document.getElementById('answerField').classList.remove('correct', 'incorrect');
+        document.getElementById('feedback').textContent = '';
+        document.getElementById('feedback').className = 'feedback';
+
+        currentTask = tasks[Math.floor(Math.random() * tasks.length)];
+        document.getElementById('taskText').innerHTML = currentTask.text.replace(/\n/g, '<br>');
+    }
+
+    function checkAnswers() {
+        let allCorrect = true;
+
+        const bits = currentTask.bitsPerChar;
+        const bytes = currentTask.bytesPerChar;
+        const diff = currentTask.sizeDiff;
+        
+        const totalRemoved = Math.floor(diff / bytes); 
+        const wordLength = Math.floor(diff / bytes) - 2;
+
+        const checks = [
+            {id: 'ans1', value: bits},
+            {id: 'ans2', value: bytes},
+            {id: 'ans3', value: diff},
+            {id: 'ans4', value: totalRemoved},
+            {id: 'ans5', value: wordLength}
+        ];
+
+        checks.forEach(check => {
+            const input = document.getElementById(check.id);
+            const row = input.closest('.step-row');
+            if (input.value.trim() === String(check.value)) {
+                row.classList.remove('incorrect');
+                row.classList.add('correct');
+            } else {
+                row.classList.remove('correct');
+                row.classList.add('incorrect');
+                allCorrect = false;
+            }
+        });
+
+        const finalInput = document.getElementById('answerField');
+        if (finalInput.value.trim().toUpperCase() === currentTask.answer) {
+            finalInput.classList.remove('incorrect');
+            finalInput.classList.add('correct');
+        } else {
+            finalInput.classList.remove('correct');
+            finalInput.classList.add('incorrect');
+            allCorrect = false;
+        }
+
+        const feedback = document.getElementById('feedback');
+        if (allCorrect) {
+            feedback.textContent = 'Всё верно! Ответ сохранен.';
+            feedback.className = 'feedback success';
+            document.querySelectorAll('.steps-container input, #answerField').forEach(input => input.disabled = true);
+        } else {
+            feedback.textContent = 'Есть ошибки. Проверьте вычисления.';
+            feedback.className = 'feedback error';
+        }
+    }
+
+    function showSolution() {
+        if (solutionVisible) {
+            document.querySelectorAll('.step-row').forEach(row => row.classList.remove('correct'));
+            document.getElementById('answerField').classList.remove('correct');
+            document.getElementById('solutionBtn').textContent = 'Решение';
+            solutionVisible = false;
+            return;
+        }
+
+        const bits = currentTask.bitsPerChar;
+        const bytes = currentTask.bytesPerChar;
+        const diff = currentTask.sizeDiff;
+        
+        const totalRemoved = Math.floor(diff / bytes);
+        const wordLength = Math.floor(diff / bytes) - 2;
+
+        document.getElementById('ans1').value = bits;
+        document.getElementById('ans2').value = bytes;
+        document.getElementById('ans3').value = diff;
+        document.getElementById('ans4').value = totalRemoved;
+        document.getElementById('ans5').value = wordLength;
+        document.getElementById('answerField').value = currentTask.answer;
+
+        document.getElementById('step1').classList.add('correct');
+        document.getElementById('step2').classList.add('correct');
+        document.getElementById('step3').classList.add('correct');
+        document.getElementById('step4').classList.add('correct');
+        document.getElementById('answerField').classList.add('correct');
+        
+        document.getElementById('solutionBtn').textContent = 'Скрыть решение';
+        solutionVisible = true;
+    }
+
+    document.getElementById('checkBtn').addEventListener('click', checkAnswers);
+    document.getElementById('solutionBtn').addEventListener('click', showSolution);
+    document.getElementById('newTaskBtn').addEventListener('click', generateTask);
+
+    generateTask();
+</script>
+
+</body>
+</html>
